@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_4/search_pages.dart';
 import 'package:flutter_application_4/tenday_page.dart';
 import 'package:flutter_application_4/tomorrow_page.dart';
 import 'package:flutter_application_4/widget/day_chip_widget.dart';
@@ -28,9 +29,9 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> loadWeather() async {
     try {
-      LocationPermission permission;
+      setState(() => isLoading = true);
 
-      permission = await Geolocator.requestPermission();
+      LocationPermission permission = await Geolocator.requestPermission();
 
       if (permission == LocationPermission.denied) {
         throw Exception("Location permission denied");
@@ -57,6 +58,34 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  Future<void> _openSearch() async {
+    final selectedCity = await showSearch<String>(
+      context: context,
+      delegate: CitySearchDelegate(),
+    );
+
+    if (selectedCity != null && selectedCity.isNotEmpty) {
+      loadWeatherByCity(selectedCity);
+    }
+  }
+
+  Future<void> loadWeatherByCity(String city) async {
+    try {
+      setState(() => isLoading = true);
+
+      final service = WeatherService();
+      final result = await service.fetchWeather(city);
+
+      setState(() {
+        weather = result;
+        isLoading = false;
+      });
+    } catch (e) {
+      print(e);
+      setState(() => isLoading = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,6 +98,7 @@ class _HomePageState extends State<HomePage> {
               isLoading: isLoading,
               selectedDay: selectedDay,
               onDayChanged: (i) => setState(() => selectedDay = i),
+              onSearchTap: _openSearch,
             ),
           ),
 
@@ -101,12 +131,14 @@ class WeatherHeaderDelegate extends SliverPersistentHeaderDelegate {
   final bool isLoading;
   final int selectedDay;
   final ValueChanged<int> onDayChanged;
+  final VoidCallback onSearchTap;
 
   WeatherHeaderDelegate({
     required this.selectedDay,
     required this.onDayChanged,
     required this.weather,
     required this.isLoading,
+    required this.onSearchTap,
   });
 
   @override
@@ -124,7 +156,7 @@ class WeatherHeaderDelegate extends SliverPersistentHeaderDelegate {
     final progress = (shrinkOffset / (maxExtent - minExtent)).clamp(0.0, 1.0);
 
     final tempFont = lerpDouble(100, 30, progress) ?? 30;
-    final spacing = lerpDouble(50, 6, progress) ?? 6;
+    final spacing = lerpDouble(45, 6, progress) ?? 6;
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -158,7 +190,7 @@ class WeatherHeaderDelegate extends SliverPersistentHeaderDelegate {
         Row(
           children: [
             Text(
-              weather!.city,
+              weather?.city ?? "",
               style: const TextStyle(
                 fontSize: 18,
                 color: Colors.white,
@@ -167,7 +199,10 @@ class WeatherHeaderDelegate extends SliverPersistentHeaderDelegate {
             ),
 
             const Spacer(),
-            const Icon(Icons.search, color: Colors.white),
+            IconButton(
+              icon: const Icon(Icons.search, color: Colors.white),
+              onPressed: onSearchTap,
+            ),
           ],
         ),
 
@@ -228,13 +263,13 @@ class WeatherHeaderDelegate extends SliverPersistentHeaderDelegate {
               selected: selectedDay == 0,
               onTap: () => onDayChanged(0),
             ),
-            Spacer(),
+            const Spacer(),
             DayChip(
               text: "Tomorrow",
               selected: selectedDay == 1,
               onTap: () => onDayChanged(1),
             ),
-            Spacer(),
+            const Spacer(),
             DayChip(
               text: "10 Days",
               selected: selectedDay == 2,
@@ -247,8 +282,11 @@ class WeatherHeaderDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    return true;
+  @override
+  bool shouldRebuild(covariant WeatherHeaderDelegate oldDelegate) {
+    return oldDelegate.weather != weather ||
+        oldDelegate.isLoading != isLoading ||
+        oldDelegate.selectedDay != selectedDay;
   }
 }
 
