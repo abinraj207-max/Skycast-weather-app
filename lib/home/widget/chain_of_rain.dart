@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_4/home/theme/colors.dart';
+import 'package:flutter_application_4/home/theme/styles.dart';
 
 class RainProgressRow extends StatelessWidget {
   final String time;
   final int percent;
-  
 
   const RainProgressRow({super.key, required this.time, required this.percent});
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Row(
       children: [
         SizedBox(
-          width: 45,
-          child: Text(time, style: const TextStyle(fontSize: 12)),
+          width: size.width * 0.04,
+          child: Text(time, style: AppTextStyles.smallcardTitle),
         ),
 
         Expanded(
@@ -22,22 +24,20 @@ class RainProgressRow extends StatelessWidget {
             child: LinearProgressIndicator(
               value: percent / 100,
               minHeight: 15,
-              // ignore: deprecated_member_use
-              backgroundColor: Colors.white.withOpacity(0.6),
-              valueColor: const AlwaysStoppedAnimation(
-                Color(0xFF8E24AA), 
-              ),
+
+              backgroundColor: AppColors.chipUnselected,
+              valueColor: const AlwaysStoppedAnimation(AppColors.chipSelected),
             ),
           ),
         ),
 
-        const SizedBox(width: 8),
+        SizedBox(width: size.width * 0.02),
 
         SizedBox(
-          width: 35,
+          width: size.width * 0.1,
           child: Text(
             "$percent%",
-            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+            style: AppTextStyles.smallcardTitle,
             textAlign: TextAlign.right,
           ),
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_4/widget/weather_model.dart';
+import 'package:flutter_application_4/home/model/weather_model.dart';
+import 'package:flutter_application_4/home/theme/colors.dart';
 
 class HourlyForecast extends StatelessWidget {
   final WeatherModel weather;
@@ -7,24 +8,25 @@ class HourlyForecast extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Container(
       height: 170,
       width: double.infinity,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(103, 155, 39, 176),
+        color: AppColors.chipSelected,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         children: [
           Row(
-            children: const [
+            children: [
               Icon(Icons.timelapse_rounded),
-              SizedBox(width: 10),
+              SizedBox(width: size.width * 0.01),
               Text("Hourly forecast"),
             ],
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: size.height * 0.01),
           Row(
             children: List.generate(6, (i) {
               final now = DateTime.now();

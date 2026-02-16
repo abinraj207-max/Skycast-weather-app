@@ -1,12 +1,14 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_4/search_pages.dart';
-import 'package:flutter_application_4/tenday_page.dart';
-import 'package:flutter_application_4/tomorrow_page.dart';
-import 'package:flutter_application_4/widget/day_chip_widget.dart';
-import 'package:flutter_application_4/widget/home_body_widget.dart';
-import 'package:flutter_application_4/widget/weather_model.dart';
-import 'package:flutter_application_4/widget/weather_service.dart';
+import 'package:flutter_application_4/home/search_pages.dart';
+import 'package:flutter_application_4/home/tenday_page.dart';
+import 'package:flutter_application_4/home/theme/colors.dart';
+import 'package:flutter_application_4/home/theme/styles.dart';
+import 'package:flutter_application_4/home/tomorrow_page.dart';
+import 'package:flutter_application_4/home/widget/day_chip_widget.dart';
+import 'package:flutter_application_4/home/widget/home_body_widget.dart';
+import 'package:flutter_application_4/home/model/weather_model.dart';
+import 'package:flutter_application_4/home/service/weather_service.dart';
 import 'package:geolocator/geolocator.dart';
 
 class HomePage extends StatefulWidget {
@@ -156,28 +158,27 @@ class WeatherHeaderDelegate extends SliverPersistentHeaderDelegate {
     final progress = (shrinkOffset / (maxExtent - minExtent)).clamp(0.0, 1.0);
 
     final tempFont = lerpDouble(100, 30, progress) ?? 30;
-    final spacing = lerpDouble(45, 6, progress) ?? 6;
-
+    final spacing = lerpDouble(45, 1, progress) ?? 6;
+    final Size size = MediaQuery.of(context).size;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            Color.fromARGB(255, 100, 66, 234),
-            Color.fromARGB(255, 192, 64, 238),
-          ],
+          colors: [AppColors.primaryStart, AppColors.primaryEnd],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),
       ),
 
       child: isLoading || weather == null
-          ? const Center(child: CircularProgressIndicator(color: Colors.white))
-          : _buildHeaderContent(tempFont, spacing),
+          ? const Center(
+              child: CircularProgressIndicator(color: AppColors.chipUnselected),
+            )
+          : _buildHeaderContent(tempFont, spacing, size),
     );
   }
 
-  Widget _buildHeaderContent(double tempFont, double spacing) {
+  Widget _buildHeaderContent(double tempFont, double spacing, Size size) {
     final temp = weather!.temp.round();
     final feels = weather!.feelsLike.round();
     final desc = weather!.description;
@@ -189,18 +190,11 @@ class WeatherHeaderDelegate extends SliverPersistentHeaderDelegate {
 
         Row(
           children: [
-            Text(
-              weather?.city ?? "",
-              style: const TextStyle(
-                fontSize: 18,
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+            Text(weather?.city ?? "", style: AppTextStyles.city),
 
             const Spacer(),
             IconButton(
-              icon: const Icon(Icons.search, color: Colors.white),
+              icon: const Icon(Icons.search, color: AppColors.chipUnselected),
               onPressed: onSearchTap,
             ),
           ],
@@ -215,33 +209,26 @@ class WeatherHeaderDelegate extends SliverPersistentHeaderDelegate {
               style: TextStyle(
                 fontSize: tempFont,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: AppColors.whiteText,
               ),
             ),
-            const SizedBox(width: 6),
+            SizedBox(width: size.width * 0.02),
             Text(
               "Feels like $feels°",
-              style: const TextStyle(fontSize: 12, color: Colors.white),
+              style: const TextStyle(fontSize: 12, color: AppColors.whiteText),
             ),
             const Spacer(),
             Column(
               children: [
                 Image.network(
                   weather!.icon,
-                  width: 80,
-                  height: 80,
+                  width: size.width * 0.2,
+                  height: size.height * 0.06,
                   errorBuilder: (context, error, stackTrace) =>
-                      const Icon(Icons.cloud, color: Colors.white),
+                      const Icon(Icons.cloud, color: AppColors.whiteText),
                 ),
                 const SizedBox(height: 6),
-                Text(
-                  desc,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
+                Text(desc, style: AppTextStyles.smallTemp),
               ],
             ),
           ],
@@ -249,10 +236,7 @@ class WeatherHeaderDelegate extends SliverPersistentHeaderDelegate {
 
         SizedBox(height: spacing),
 
-        Text(
-          formatDate(weather!.dateTime),
-          style: const TextStyle(color: Colors.white),
-        ),
+        Text(formatDate(weather!.dateTime), style: AppTextStyles.normalWhite),
 
         SizedBox(height: spacing),
 

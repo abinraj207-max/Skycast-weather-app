@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_4/widget/chain%20_rain_widget.dart';
-import 'package:flutter_application_4/widget/weather_model.dart';
+import 'package:flutter_application_4/home/widget/chain%20_rain_widget.dart';
+import 'package:flutter_application_4/home/model/weather_model.dart';
 
 import 'daily_forcast_widget.dart';
 import 'hourly_forcast_widget.dart';
@@ -18,6 +18,7 @@ class WeatherBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     if (isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -28,7 +29,7 @@ class WeatherBody extends StatelessWidget {
           padding: const EdgeInsets.all(12),
           child: Column(
             children: [
-              const SizedBox(height: 15),
+              SizedBox(height: size.height * 0.01),
 
               Row(
                 children: [
@@ -48,7 +49,7 @@ class WeatherBody extends StatelessWidget {
                 ],
               ),
 
-              const SizedBox(height: 15),
+              SizedBox(height: size.height * 0.02),
 
               Row(
                 children: [
@@ -68,10 +69,11 @@ class WeatherBody extends StatelessWidget {
                 ],
               ),
 
-              const SizedBox(height: 15),
+              SizedBox(height: size.height * 0.02),
 
               HourlyForecast(weather: weather),
-              const SizedBox(height: 15),
+
+              SizedBox(height: size.height * 0.02),
               DailyForecast(
                 dayName: '',
                 condition: '',
@@ -80,10 +82,11 @@ class WeatherBody extends StatelessWidget {
                 icon: '',
                 weather: weather,
               ),
-              const SizedBox(height: 15),
+
+              SizedBox(height: size.height * 0.02),
               ChanceOfRain(hourlyRain: weather.hourlyRain),
 
-              const SizedBox(height: 15),
+              SizedBox(height: size.height * 0.02),
 
               Row(
                 children: [
@@ -103,7 +106,7 @@ class WeatherBody extends StatelessWidget {
                 ],
               ),
 
-              const SizedBox(height: 40),
+              SizedBox(height: size.height * 0.04),
             ],
           ),
         ),

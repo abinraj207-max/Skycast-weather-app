@@ -1,8 +1,10 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_4/widget/chain_of_rain.dart';
-import 'package:flutter_application_4/widget/hourly_rain_model.dart';
+import 'package:flutter_application_4/home/theme/colors.dart';
+import 'package:flutter_application_4/home/theme/styles.dart';
+import 'package:flutter_application_4/home/widget/chain_of_rain.dart';
+import 'package:flutter_application_4/home/model/hourly_rain_model.dart';
 
 class ChanceOfRain extends StatelessWidget {
   final List<HourlyRain> hourlyRain;
@@ -11,6 +13,7 @@ class ChanceOfRain extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     if (hourlyRain.isEmpty) {
       return const Text("No rain data available");
     }
@@ -18,27 +21,24 @@ class ChanceOfRain extends StatelessWidget {
     final rainData = hourlyRain.take(4).toList();
 
     return Container(
-      height: 170,
+      height: size.height*0.2,
       width: double.infinity,
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(103, 155, 39, 176),
+        color: AppColors.chipSelected,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
               Icon(Icons.water_drop_outlined),
-              SizedBox(width: 6),
-              Text(
-                "Chance of rain",
-                style: TextStyle(fontWeight: FontWeight.w600),
-              ),
+              SizedBox(width: size.width * 0.01),
+              Text("Chance of rain", style: AppTextStyles.cardTitle),
             ],
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: size.height * 0.01),
 
           ...rainData.map(
             (hour) => Padding(

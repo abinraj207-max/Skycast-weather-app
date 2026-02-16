@@ -1,5 +1,5 @@
-import 'package:flutter_application_4/dailyforcast_model.dart';
-import 'package:flutter_application_4/widget/hourly_rain_model.dart';
+import 'package:flutter_application_4/home/model/dailyforcast_model.dart';
+import 'package:flutter_application_4/home/model/hourly_rain_model.dart';
 
 class WeatherModel {
   final String city;

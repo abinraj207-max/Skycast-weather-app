@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_4/home/theme/colors.dart';
+import 'package:flutter_application_4/home/theme/styles.dart';
 
 class InfoCard extends StatelessWidget {
   final IconData icon;
@@ -18,18 +20,19 @@ class InfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Container(
       height: 65,
       width: 190,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(103, 155, 39, 176),
+        color: AppColors.chipSelected,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
         children: [
           Icon(icon, color: Colors.black),
-          const SizedBox(width: 6),
+          SizedBox(width: size.width * 0.02),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -37,13 +40,13 @@ class InfoCard extends StatelessWidget {
               Row(
                 children: [
                   Text(value),
-                  const SizedBox(width: 6),
+                  SizedBox(width: size.width * 0.02),
                   Icon(
                     down ? Icons.arrow_drop_down : Icons.arrow_drop_up,
                     size: 12,
-                    color: down ? Colors.red : Colors.green,
+                    color: down ? AppColors.infocardred : AppColors.infocardred,
                   ),
-                  Text(change, style: const TextStyle(fontSize: 12)),
+                  Text(change, style: AppTextStyles.smallcardTitle),
                 ],
               ),
             ],

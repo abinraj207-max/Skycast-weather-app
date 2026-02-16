@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_4/dailyforcast_model.dart';
+import 'package:flutter_application_4/home/model/dailyforcast_model.dart';
+import 'package:flutter_application_4/home/theme/colors.dart';
+import 'package:flutter_application_4/home/theme/styles.dart';
 
 class TendayPage extends StatelessWidget {
   final List<DailyForecastModel> daily;
 
-  const TendayPage({
-    super.key,
-    required this.daily,
-  });
+  const TendayPage({super.key, required this.daily});
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     if (daily.isEmpty) {
       return const Center(child: Text("No forecast data"));
     }
@@ -26,30 +26,17 @@ class TendayPage extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: const Color(0xFFE9DDFF),
+              color: AppColors.cardBackground,
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(
               children: [
-              
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      day.dayName,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      day.condition,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.black54,
-                      ),
-                    ),
+                    Text(day.dayName, style: AppTextStyles.cardTitle),
+                    SizedBox(height: size.height * 0.01),
+                    Text(day.condition, style: AppTextStyles.smallcardTitle),
                   ],
                 ),
 
@@ -61,30 +48,20 @@ class TendayPage extends StatelessWidget {
                   children: [
                     Text(
                       "${day.maxTemp.round()}°",
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: AppTextStyles.cardTitle,
                     ),
                     const SizedBox(height: 4),
                     Text(
                       "${day.minTemp.round()}°",
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.black54,
-                      ),
+                      style: AppTextStyles.smallcardTitle,
                     ),
                   ],
                 ),
 
-                const SizedBox(width: 10),
+                SizedBox(width: size.width * 0.03),
 
                 /// ICON
-                Image.network(
-                  day.icon,
-                  width: 40,
-                  height: 40,
-                ),
+                Image.network(day.icon, width: 40, height: 40),
               ],
             ),
           ),

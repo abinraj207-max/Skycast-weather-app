@@ -8,12 +8,17 @@ class DailyForecastGraph extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+
     if (weeklyTemps.isEmpty) {
-      return const SizedBox(height: 90, child: Center(child: Text("No Data")));
+      return SizedBox(
+        height: size.height * 0.07,
+        child: Center(child: Text("No Data")),
+      );
     }
 
     return SizedBox(
-      height: 90,
+      height: size.height * 0.12,
       child: LineChart(
         LineChartData(
           minY: weeklyTemps.reduce((a, b) => a < b ? a : b) - 2,

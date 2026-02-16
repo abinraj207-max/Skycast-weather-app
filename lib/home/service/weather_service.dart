@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'weather_model.dart';
+import '../model/weather_model.dart';
 
 class WeatherService {
   static const String apiKey = "5640982ef620446186444644261302";

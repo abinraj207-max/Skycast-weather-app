@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_4/widget/daily_forecast_graph.dart';
-import 'package:flutter_application_4/widget/weather_model.dart';
+import 'package:flutter_application_4/home/theme/colors.dart';
+import 'package:flutter_application_4/home/widget/daily_forecast_graph.dart';
+import 'package:flutter_application_4/home/model/weather_model.dart';
 
 class DailyForecast extends StatelessWidget {
   final String dayName;
@@ -21,26 +22,27 @@ class DailyForecast extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     final List<double> weeklyTemps = weather.daily
         .map((e) => e.maxTemp)
         .toList();
     return Container(
-      height: 170,
+      height: size.height * 0.2,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(103, 155, 39, 176),
+        color: AppColors.chipSelected,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         children: [
           Row(
-            children: const [
+            children: [
               Icon(Icons.calendar_month),
-              SizedBox(width: 10),
+              SizedBox(width: size.width * 0.01),
               Text("Daily forecast"),
             ],
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: size.height * 0.01),
           DailyForecastGraph(weeklyTemps: weeklyTemps),
         ],
       ),

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_4/widget/weather_service.dart';
+import 'package:flutter_application_4/home/service/weather_service.dart';
 
 
 class CitySearchDelegate extends SearchDelegate<String> {
   final WeatherService service = WeatherService();
 
-  /// Clear button
+
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
@@ -17,7 +17,6 @@ class CitySearchDelegate extends SearchDelegate<String> {
     ];
   }
 
-  /// Back button
   @override
   Widget? buildLeading(BuildContext context) {
     return IconButton(
@@ -26,7 +25,7 @@ class CitySearchDelegate extends SearchDelegate<String> {
     );
   }
 
-  /// When user presses search button on keyboard
+ 
   @override
   Widget buildResults(BuildContext context) {
     final cityName = query.trim();
@@ -36,7 +35,6 @@ class CitySearchDelegate extends SearchDelegate<String> {
     return const SizedBox();
   }
 
-  /// Suggestions while typing
   @override
   Widget buildSuggestions(BuildContext context) {
     if (query.isEmpty) {
@@ -67,7 +65,7 @@ class CitySearchDelegate extends SearchDelegate<String> {
               leading: const Icon(Icons.location_city),
               title: Text(displayText),
               onTap: () {
-                close(context, displayText);   // return city
+                close(context, displayText);  
               },
             );
           },

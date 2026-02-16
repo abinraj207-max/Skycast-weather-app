@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_4/home/theme/colors.dart';
 
 class DayChip extends StatelessWidget {
   final String text;
@@ -14,22 +15,21 @@ class DayChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 40,
-        width: 110,
+        height: size.height * 0.04,
+        width: size.width * 0.28,
         decoration: BoxDecoration(
-          color: selected
-              ? const Color.fromARGB(103, 155, 39, 176)
-              : const Color.fromARGB(255, 252, 250, 250),
+          color: selected ? AppColors.chipSelected : AppColors.chipUnselected,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Center(
           child: Text(
             text,
             style: TextStyle(
-              color: selected ? Colors.white : Colors.black,
+              color: selected ? AppColors.whiteText : AppColors.darkText,
               fontWeight: FontWeight.w600,
             ),
           ),

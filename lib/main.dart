@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_4/home_page.dart';
+import 'package:flutter_application_4/home/home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -8,17 +8,12 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
- 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-      ),
+      title: 'Skycast',
+      theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
       home: HomePage(),
     );
   }
 }
-
